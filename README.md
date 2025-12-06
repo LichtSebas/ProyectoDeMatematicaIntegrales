@@ -34,10 +34,10 @@ Puedes ingresar cualquier función Python que acepte `numpy arrays`.
 Asegúrate de tener Python 3.10+ instalado.
 
 1. Clona el repositorio:
-- git clone https://github.com/tu_usuario/tu_repositorio.git
+- git clone https://github.com/LichtSebas/ProyectoDeMatematicaIntegrales
 
 2. Entra al proyecto:
-- cd tu_repositorio
+- cd ProyectoDeMatematicaIntegrales
 
 3. Instala las dependencias:
 - pip install -r requirements.txt
