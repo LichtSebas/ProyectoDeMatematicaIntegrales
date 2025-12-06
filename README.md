@@ -28,10 +28,6 @@ Calcula la longitud de una función usando derivadas numéricas.
 ### 🔸 Soporte de funciones personalizadas
 Puedes ingresar cualquier función Python que acepte `numpy arrays`.
 
-Ejemplo:
-```python
-func = lambda x: np.sqrt(x) + 2
-
 
 📦 Instalación
 
