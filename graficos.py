@@ -5,52 +5,71 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 def graficar_dos_funciones_2d(func1, func2, a, b, var="x", eje_val=0):
 
-    vals = np.linspace(a, b, 200)
+    vals = np.linspace(a, b, 3000)
 
     # Evaluar func1
     try:
-        fvals1 = func1(vals)
-        if np.isscalar(fvals1):
-            fvals1 = np.full_like(vals, fvals1)
+        f1 = func1(vals)
     except:
-        fvals1 = np.array([func1(v) for v in vals])
+        f1 = np.array([func1(v) for v in vals])
+    if np.isscalar(f1):
+        f1 = np.full_like(vals, f1)
 
     # Evaluar func2
     if func2 is None:
-        fvals2 = np.zeros_like(vals)
+        f2 = np.zeros_like(vals)
     else:
         try:
-            fvals2 = func2(vals)
-            if np.isscalar(fvals2):
-                fvals2 = np.full_like(vals, fvals2)
+            f2 = func2(vals)
         except:
-            fvals2 = np.array([func2(v) for v in vals])
+            f2 = np.array([func2(v) for v in vals])
+        if np.isscalar(f2):
+            f2 = np.full_like(vals, f2)
 
-    # Detectar función superior e inferior
-    f_arriba = np.maximum(fvals1, fvals2)
-    f_abajo = np.minimum(fvals1, fvals2)
+    # Superior e inferior
+    arriba = np.maximum(f1, f2)
+    abajo  = np.minimum(f1, f2)
 
     fig, ax = plt.subplots()
-    if var == "x":
-        ax.plot(vals, f_arriba, label="Función superior")
-        ax.plot(vals, f_abajo, label="Función inferior")
-        # Relleno entre funciones respecto al eje de referencia
-        ax.fill_between(vals, f_abajo - eje_val, f_arriba - eje_val, alpha=0.3)
-        ax.axhline(y=eje_val, color='gray', linestyle='--', label=f"Eje y={eje_val}")
-        ax.set_xlabel("x")
-        ax.set_ylabel("y")
-    else:
-        ax.plot(f_arriba, vals, label="Función superior")
-        ax.plot(f_abajo, vals, label="Función inferior")
-        ax.fill_betweenx(vals, f_abajo - eje_val, f_arriba - eje_val, alpha=0.3)
-        ax.axvline(x=eje_val, color='gray', linestyle='--', label=f"Eje x={eje_val}")
+
+    # ============================================
+    # VAR = X  →  y = f(x)
+    # ============================================
+    if var.lower() == "x":
+
+        ax.plot(vals, f1, label="Función 1")
+        ax.plot(vals, f2, label="Función 2")
+
+        # Relleno real (sin desplazar nada)
+        ax.fill_between(vals, abajo, arriba, alpha=0.3)
+
+        ax.axhline(eje_val, color="gray", linestyle="--", label=f"Eje y={eje_val}")
+
         ax.set_xlabel("x")
         ax.set_ylabel("y")
 
-    ax.set_title("Funciones")
+    # ============================================
+    # VAR = Y  →  x = f(y)
+    # ============================================
+    else:
+
+        ax.plot(f1, vals, label="Función 1")
+        ax.plot(f2, vals, label="Función 2")
+
+        # Relleno real (sin desplazar nada)
+        ax.fill_betweenx(vals, abajo, arriba, alpha=0.3)
+
+        ax.axvline(eje_val, color="gray", linestyle="--", label=f"Eje x={eje_val}")
+
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+
     ax.legend()
+    ax.set_title("Funciones")
+
     canvas = FigureCanvas(fig)
     return canvas
+
 
 def graficar_solido_entre_funciones(func1, func2, a, b, var="x", eje="X", eje_val=0):
     n = 50
